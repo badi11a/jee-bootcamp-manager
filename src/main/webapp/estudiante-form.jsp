@@ -22,6 +22,10 @@
         <label for="email" class="form-label">Email</label>
         <input type="email" class="form-control" id="email" name="email" value="${estudiante.email}" required maxlength="50">
     </div>
+    <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" id="activo" name="activo" <c:if test="${estudiante.activo}">checked</c:if>>
+        <label class="form-check-label" for="activo">Activo</label>
+    </div>
     <button type="submit" class="btn btn-success">Guardar</button>
     <a href="estudiantes" class="btn btn-secondary">Cancelar</a>
 </form>
