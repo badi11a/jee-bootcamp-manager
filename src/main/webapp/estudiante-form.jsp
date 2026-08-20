@@ -12,15 +12,15 @@
 <form action="estudiantes" method="post">
     <div class="mb-3">
         <label for="rut" class="form-label">RUT</label>
-        <input type="text" class="form-control" id="rut" name="rut" value="${estudiante.rut}" required maxlength="12">
+        <input type="text" class="form-control" id="rut" name="rut" value="${fn:escapeXml(estudiante.rut)}" required maxlength="12">
     </div>
     <div class="mb-3">
         <label for="nombre" class="form-label">Nombre</label>
-        <input type="text" class="form-control" id="nombre" name="nombre" value="${estudiante.nombre}" required maxlength="50">
+        <input type="text" class="form-control" id="nombre" name="nombre" value="${fn:escapeXml(estudiante.nombre)}" required maxlength="50">
     </div>
     <div class="mb-3">
         <label for="email" class="form-label">Email</label>
-        <input type="email" class="form-control" id="email" name="email" value="${estudiante.email}" required maxlength="50">
+        <input type="email" class="form-control" id="email" name="email" value="${fn:escapeXml(estudiante.email)}" required maxlength="50">
     </div>
     <div class="mb-3 form-check">
         <input type="checkbox" class="form-check-input" id="activo" name="activo" <c:if test="${estudiante.activo}">checked</c:if>>

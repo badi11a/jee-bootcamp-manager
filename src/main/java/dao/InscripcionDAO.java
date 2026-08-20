@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InscripcionDAO {
-    public List<Inscripcion> listarPorEstudiante(int estudianteId) {
+    public List<Inscripcion> listarPorEstudiante(int estudianteId) throws SQLException {
         List<Inscripcion> lista = new ArrayList<>();
         String sql = "SELECT i.id, i.estudiante_id, i.curso_id, c.nombre as nombreCurso, i.fecha_inscripcion " +
                 "FROM inscripcion i JOIN curso c ON i.curso_id = c.id WHERE i.estudiante_id = ?";
@@ -25,8 +25,6 @@ public class InscripcionDAO {
                     lista.add(ins);
                 }
             }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
         }
         return lista;
     }

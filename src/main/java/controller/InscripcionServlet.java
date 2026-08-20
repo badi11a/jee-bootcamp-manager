@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 @WebServlet("/inscripciones")
@@ -19,9 +20,13 @@ public class InscripcionServlet extends HttpServlet {
         String idStr = request.getParameter("estudianteId");
         if (idStr != null) {
             int estudianteId = Integer.parseInt(idStr);
-            List<Inscripcion> inscripciones = inscripcionDAO.listarPorEstudiante(estudianteId);
-            request.setAttribute("inscripciones", inscripciones);
-            request.getRequestDispatcher("inscripciones.jsp").forward(request, response);
+            try {
+                List<Inscripcion> inscripciones = inscripcionDAO.listarPorEstudiante(estudianteId);
+                request.setAttribute("inscripciones", inscripciones);
+                request.getRequestDispatcher("inscripciones.jsp").forward(request, response);
+            } catch (SQLException ex) {
+                throw new ServletException("Error de base de datos", ex);
+            }
         } else {
             response.sendRedirect("estudiantes");
         }

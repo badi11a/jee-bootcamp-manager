@@ -36,7 +36,8 @@ Thumbs.db
 # User-specific
 *.local
 *.env
+db.properties
 
 # SQL dumps
 *.sql
-!bootcamp_manager.sql
+!sql/bootcamp_manager.sql

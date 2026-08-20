@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EstudianteDAO {
-    public List<Estudiante> listarTodos() {
+    public List<Estudiante> listarTodos() throws SQLException {
         List<Estudiante> estudiantes = new ArrayList<>();
         String sql = "SELECT * FROM estudiante WHERE activo = 1";
         try (Connection conn = DatabaseConnection.getInstance();
@@ -23,13 +23,14 @@ public class EstudianteDAO {
                 e.setActivo(rs.getBoolean("activo"));
                 estudiantes.add(e);
             }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
         }
         return estudiantes;
     }
 
-    public void insertar(Estudiante estudiante) {
+    /**
+     * @return true si el estudiante fue insertado; false si ya existe un estudiante con ese RUT.
+     */
+    public boolean insertar(Estudiante estudiante) throws SQLException {
         String sql = "INSERT INTO estudiante (rut, nombre, email, activo) VALUES (?, ?, ?, ?)";
         try (Connection conn = DatabaseConnection.getInstance();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -38,12 +39,13 @@ public class EstudianteDAO {
             ps.setString(3, estudiante.getEmail());
             ps.setBoolean(4, estudiante.isActivo());
             ps.executeUpdate();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+            return true;
+        } catch (SQLIntegrityConstraintViolationException ex) {
+            return false;
         }
     }
 
-    public Estudiante obtenerPorId(int id) {
+    public Estudiante obtenerPorId(int id) throws SQLException {
         String sql = "SELECT * FROM estudiante WHERE id = ?";
         try (Connection conn = DatabaseConnection.getInstance();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -59,13 +61,14 @@ public class EstudianteDAO {
                     return e;
                 }
             }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
         }
         return null;
     }
 
-    public void actualizar(Estudiante estudiante) {
+    /**
+     * @return true si el estudiante fue actualizado; false si ya existe otro estudiante con ese RUT.
+     */
+    public boolean actualizar(Estudiante estudiante) throws SQLException {
         String sql = "UPDATE estudiante SET rut = ?, nombre = ?, email = ?, activo = ? WHERE id = ?";
         try (Connection conn = DatabaseConnection.getInstance();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -75,19 +78,24 @@ public class EstudianteDAO {
             ps.setBoolean(4, estudiante.isActivo());
             ps.setInt(5, estudiante.getId());
             ps.executeUpdate();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+            return true;
+        } catch (SQLIntegrityConstraintViolationException ex) {
+            return false;
         }
     }
 
-    public void eliminar(int id) {
+    /**
+     * @return true si el estudiante fue eliminado; false si tiene inscripciones asociadas y no se pudo eliminar.
+     */
+    public boolean eliminar(int id) throws SQLException {
         String sql = "DELETE FROM estudiante WHERE id = ?";
         try (Connection conn = DatabaseConnection.getInstance();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, id);
             ps.executeUpdate();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+            return true;
+        } catch (SQLIntegrityConstraintViolationException ex) {
+            return false;
         }
     }
 }

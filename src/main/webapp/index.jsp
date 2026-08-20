@@ -1,6 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/WEB-INF/jspf/header.jspf" %>
-<jsp:include page="WEB-INF/jspf/footer.jspf" />
 <div class="container py-5">
   <div class="row justify-content-center align-items-center" style="min-height: 60vh;">
     <div class="col-md-8">
