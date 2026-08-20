@@ -21,7 +21,9 @@ public class EstudianteServlet extends HttpServlet {
         if (action == null) action = "listar";
         switch (action) {
             case "nuevo":
-                request.setAttribute("estudiante", new Estudiante());
+                Estudiante nuevoEstudiante = new Estudiante();
+                nuevoEstudiante.setActivo(true);
+                request.setAttribute("estudiante", nuevoEstudiante);
                 request.getRequestDispatcher("estudiante-form.jsp").forward(request, response);
                 break;
             case "editar":
